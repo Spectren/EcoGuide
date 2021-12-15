@@ -1,0 +1,7 @@
+/media
+/venv
+__pycache__
+.idea
+src/migrations
+*.sqlite3
+*.xlsx
