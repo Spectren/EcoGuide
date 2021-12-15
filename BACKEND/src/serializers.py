@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from .models import Project, RecycleType, Event, ProjectMark, WallPost, Advert
+from .models import Project, RecycleType, Event, ProjectMark, WallPost, Advert, PickPoint
 from rest_framework import serializers
 from django.db.models import Avg
 
@@ -46,8 +46,10 @@ class ProjectSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     banner = serializers.ImageField()
     about = serializers.CharField()
-    begin_date = serializers.DateTimeField()
-    end_date = serializers.DateTimeField()
+    begin_date = serializers.DateField()
+    begin_time = serializers.TimeField()
+    end_date = serializers.DateField()
+    end_time = serializers.TimeField()
     location = serializers.CharField()
     lat = serializers.DecimalField(max_digits=9, decimal_places=6)
     lon = serializers.DecimalField(max_digits=9, decimal_places=6)
@@ -55,8 +57,8 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ['id', 'banner', 'about', 'begin_date', 'end_date', 'location', 'lat', 'lon', 'organizer']
-
+        # fields = ['id', 'banner', 'about', 'begin_date', 'end_date', 'location', 'lat', 'lon', 'organizer']
+        fields = '__all__'
 
 class WallPostSerializer(serializers.ModelSerializer):
     title = serializers.CharField()
@@ -96,8 +98,20 @@ class AdvertSerializer(serializers.ModelSerializer):
     photo = serializers.ImageField()
     contacts = serializers.CharField()
     location = serializers.CharField()
-    pickup_time = serializers.DateTimeField()
 
     class Meta:
         model = Advert
+        fields = '__all__'
+
+
+class PickPointSerializer(serializers.ModelSerializer):
+    name = serializers.CharField()
+    place = serializers.CharField()
+    lat = serializers.DecimalField(max_digits=9, decimal_places=6)
+    lon = serializers.DecimalField(max_digits=9, decimal_places=6)
+    type = RecycleTypeSerializer()
+    about = serializers.CharField()
+
+    class Meta:
+        model = PickPoint
         fields = '__all__'

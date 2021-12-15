@@ -19,6 +19,8 @@ router.register(r'recycletypes', views.RecycleTypeView, basename='recycletypes')
 router.register(r'projects', views.ProjectView, basename='projects')
 router.register(r'events', views.EventView, basename='events')
 router.register(r'posts', views.WallPostView, basename='posts')
+router.register(r'adverts', views.AdvertView, basename='adverts')
+router.register(r'pickpoints', views.PickPointView, basename='pickpoints')
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
