@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:eco_guide/components/ecoguide.dart';
+import 'package:eco_guide/components/master.dart';
 
 void main() => runApp(new MyApp());
 
@@ -11,6 +11,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        home: EcoGuidePage());
+        home: MasterPage());
   }
 }

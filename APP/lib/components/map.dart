@@ -25,7 +25,6 @@ class _MapPageState extends State<MapPage> {
     return GoogleMap(
       mapType: MapType.normal,
       initialCameraPosition: _initialCameraPosition,
-
     );
   }
 }

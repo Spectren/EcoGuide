@@ -29,7 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_maps_flutter: ^0.5.21+15
+  google_maps_flutter: ^2.1.1
   location: ^2.3.5
   # permission: ^0.1.7
 
@@ -66,6 +66,14 @@ flutter:
     - assets/icons/eco-house.png
     - assets/icons/eco-recycle.png
     - assets/icons/eco-timeline.png
+    - assets/icons/biohazard.png
+    - assets/icons/drink.png
+    - assets/icons/food.png
+    - assets/icons/glass.png
+    - assets/icons/hydro.png
+    - assets/icons/reusable.png
+    - assets/icons/tshirt.png
+    - assets/icons/eco.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
