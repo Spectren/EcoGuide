@@ -5,8 +5,8 @@ from django.contrib.auth.models import User, Group
 from rest_framework import permissions
 from rest_framework import mixins, viewsets
 from src.serializers import UserSerializer, GroupSerializer, RecycleTypeSerializer, ProjectSerializer, EventSerializer, \
-    WallPostSerializer
-from src.models import RecycleType, Project, Event, WallPost
+    WallPostSerializer, PickPointSerializer
+from src.models import RecycleType, Project, Event, WallPost, PickPoint
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -56,3 +56,10 @@ class WallPostView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.Update
 
     def get_queryset(self):
         return WallPost.objects.all()
+
+class PickPointView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
+                   viewsets.GenericViewSet):
+    serializer_class = PickPointSerializer
+
+    def get_queryset(self):
+        return PickPoint.objects.all()

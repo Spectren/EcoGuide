@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from .models import Project, RecycleType, Event, ProjectMark, WallPost, Advert
+from .models import Project, RecycleType, Event, ProjectMark, WallPost, Advert, PickPoint
 from rest_framework import serializers
 from django.db.models import Avg
 
@@ -100,4 +100,17 @@ class AdvertSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Advert
+        fields = '__all__'
+
+
+class PickPointSerializer(serializers.ModelSerializer):
+    name = serializers.CharField()
+    place = serializers.CharField()
+    lat = serializers.DecimalField(max_digits=9, decimal_places=6)
+    lon = serializers.DecimalField(max_digits=9, decimal_places=6)
+    type = RecycleTypeSerializer()
+    about = serializers.CharField()
+
+    class Meta:
+        model = PickPoint
         fields = '__all__'

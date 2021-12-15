@@ -5,7 +5,10 @@ from django.db import models
 # Create your models here.
 
 class RecycleType(models.Model):
-    name = models.CharField(max_length=500, unique=True)
+    name = models.CharField('Наименование материала, например: Бумага', max_length=500, unique=True)
+    logo = models.ImageField('Картинка материала', upload_to='recycle_images', max_length=254)
+    color_hex = models.CharField('Цвет-индикатор этого материала, HEX (то есть выглядит как #2596be)\n'
+                                 'Указывается БЕЗ `#`!', max_length=6)
 
     def __str__(self):
         return self.name
@@ -14,13 +17,13 @@ class RecycleType(models.Model):
 class Project(models.Model):
     """ Проекты """
     name = models.CharField(max_length=500, unique=True)
-    logo = models.ImageField(upload_to='project_logos', max_length=254)
-    about = models.TextField()
-    contact_url = models.URLField()
-    contact_email = models.EmailField(null=True, blank=True)
-    contact_phone = models.CharField(max_length=11, null=True, blank=True)
-    recycle_types = models.ManyToManyField(RecycleType, blank=True)
-    admins = models.ManyToManyField(User)
+    logo = models.ImageField('Логотип', upload_to='project_logos', max_length=254, null=True, blank=True)
+    about = models.TextField('Описание')
+    contact_url = models.URLField('Ссылка на сайт', null=True, blank=True)
+    contact_email = models.EmailField('Контактный email', null=True, blank=True)
+    contact_phone = models.CharField('Телефон для связи', max_length=11, null=True, blank=True)
+    recycle_types = models.ManyToManyField(RecycleType, blank=True, verbose_name='Типы вторсырья, которые принимает организация')
+    admins = models.ManyToManyField(User, verbose_name='Список администраторов')
 
     def __str__(self):
         return "%s %s" % (self.name, self.admins.all())
@@ -29,13 +32,14 @@ class Project(models.Model):
 class Event(models.Model):
     """ Мероприятия """
     banner = models.ImageField(upload_to='evnet_banners', max_length=1024)
-    about = models.TextField()
-    begin_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    location = models.CharField(max_length=1500, null=True, blank=True)
-    lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    organizer = models.ForeignKey(Project, on_delete=models.CASCADE)
+    about = models.TextField('О мероприятии')
+    begin_date = models.DateTimeField('Дата и время начала')
+    end_date = models.DateTimeField('Дата и время предполагаемого окончания')
+    location = models.CharField('Адрес места проведения', max_length=1500, null=True, blank=True)
+    lat = models.DecimalField('Координаты широты', max_digits=9, decimal_places=6, null=True, blank=True)
+    lon = models.DecimalField('Координаты долготы', max_digits=9, decimal_places=6, null=True, blank=True)
+    organizer = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Организатор (Организация/проект)')
+    is_top = models.BooleanField('Выводить в топ?', default=False)
 
     def __str__(self):
         return "%s %s" % (self.about, self.organizer.all())
@@ -70,9 +74,9 @@ class ProjectMark(models.Model):
 
 class EventMark(models.Model):
     """ Пользовательские оценки мероприятий """
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    score = models.IntegerField("Оценка пользователя")
-    event = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Кто поставил оценку')
+    score = models.FloatField("Оценка пользователя")
+    event = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Какому мероприятию')
 
     class Meta:
         unique_together = ('user', 'event',)
@@ -83,8 +87,8 @@ class Advert(models.Model):
     title = models.CharField("Заголовок", max_length=150)
     description = models.CharField("Краткое описание", max_length=300, null=True, blank=True)
     body = models.TextField("Текст объявления")
-    photo = models.ImageField(upload_to='add_photos', max_length=254 * 2)
-    contacts = models.TextField("Контакты")
+    photo = models.ImageField('Банер объявления', upload_to='add_photos', max_length=254 * 2)
+    contacts = models.TextField("Контакты автора")
     location = models.CharField("Адрес самовывоза", max_length=1500, null=True, blank=True)
 
 
@@ -92,7 +96,7 @@ class PickPoint(models.Model):
     """ Точки приема вторсырья на карте """
     name = models.CharField("Название организации", max_length=150)
     place = models.CharField("Адрес организации", max_length=1500, null=True, blank=True)
-    lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    type = models.ManyToManyField(RecycleType)
+    lat = models.DecimalField('Координаты широты', max_digits=9, decimal_places=6, null=True, blank=True)
+    lon = models.DecimalField('Координаты широты', max_digits=9, decimal_places=6, null=True, blank=True)
+    type = models.ManyToManyField(RecycleType, verbose_name='Типы материалов, которые принимает точка')
     about = models.TextField("Название организации")
