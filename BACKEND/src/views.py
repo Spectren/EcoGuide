@@ -5,8 +5,8 @@ from django.contrib.auth.models import User, Group
 from rest_framework import permissions
 from rest_framework import mixins, viewsets
 from src.serializers import UserSerializer, GroupSerializer, RecycleTypeSerializer, ProjectSerializer, EventSerializer, \
-    WallPostSerializer, PickPointSerializer
-from src.models import RecycleType, Project, Event, WallPost, PickPoint
+    WallPostSerializer, PickPointSerializer, AdvertSerializer
+from src.models import RecycleType, Project, Event, WallPost, PickPoint, Advert
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -47,7 +47,7 @@ class EventView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateMod
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        return Event.objects.all()
+        return Event.objects.all().order_by('-is_top', '-begin_date', 'begin_time')
 
 
 class WallPostView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
@@ -57,8 +57,17 @@ class WallPostView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.Update
     def get_queryset(self):
         return WallPost.objects.all()
 
+
+class AdvertView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
+                 viewsets.GenericViewSet):
+    serializer_class = AdvertSerializer
+
+    def get_queryset(self):
+        return Advert.objects.all()
+
+
 class PickPointView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
-                   viewsets.GenericViewSet):
+                    viewsets.GenericViewSet):
     serializer_class = PickPointSerializer
 
     def get_queryset(self):

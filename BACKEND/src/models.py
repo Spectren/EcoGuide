@@ -32,9 +32,12 @@ class Project(models.Model):
 class Event(models.Model):
     """ Мероприятия """
     banner = models.ImageField(upload_to='evnet_banners', max_length=1024)
+    title = models.CharField("Название", max_length=150)
     about = models.TextField('О мероприятии')
-    begin_date = models.DateTimeField('Дата и время начала')
-    end_date = models.DateTimeField('Дата и время предполагаемого окончания')
+    begin_date = models.DateField('Дата и время начала')
+    begin_time = models.TimeField('Время начала', null=True, blank=True)
+    end_date = models.DateField('Дата и время предполагаемого окончания')
+    end_time = models.TimeField('Время предполагаемого окончания', null=True, blank=True)
     location = models.CharField('Адрес места проведения', max_length=1500, null=True, blank=True)
     lat = models.DecimalField('Координаты широты', max_digits=9, decimal_places=6, null=True, blank=True)
     lon = models.DecimalField('Координаты долготы', max_digits=9, decimal_places=6, null=True, blank=True)
@@ -42,7 +45,7 @@ class Event(models.Model):
     is_top = models.BooleanField('Выводить в топ?', default=False)
 
     def __str__(self):
-        return "%s %s" % (self.about, self.organizer.all())
+        return "%s %s [%s]" % (self.id, self.title, self.organizer.name)
 
 
 class WallPost(models.Model):
