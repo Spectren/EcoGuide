@@ -27,38 +27,50 @@ class ProjectSerializer(serializers.ModelSerializer):
     logo = serializers.ImageField()
     about = serializers.CharField()
     contact_url = serializers.URLField()
-    contact_email = serializers.EmailField()
-    contact_phone = serializers.CharField()
-    recycle_types = RecycleTypeSerializer(many=True)
-    admins = UserSerializer(many=True)
+    # contact_email = serializers.EmailField()
+    # contact_phone = serializers.CharField()
+    # recycle_types = RecycleTypeSerializer(many=True)
+    recycles = serializers.SerializerMethodField('get_recycle_types')
+    # admins = UserSerializer(many=True)
     mark = serializers.SerializerMethodField('count_mark')
+    lat = serializers.DecimalField(max_digits=9, decimal_places=6)
+    lon = serializers.DecimalField(max_digits=9, decimal_places=6)
 
     def count_mark(self, project):
         """ Считаем среднюю оценку проекта """
         return project.project_marks.all().aggregate(Avg('score')).get('score__avg')
 
+    def get_recycle_types(self, project):
+        return project.recycle_types.all().values_list('name', flat=True)
+
     class Meta:
         model = Project
-        fields = ['id', 'name', 'logo', 'about', 'contact_url', 'contact_email', 'contact_phone', 'recycle_types',
-                  'admins', 'mark']
+        # fields = ['id', 'name', 'logo', 'about', 'contact_url', 'contact_email', 'contact_phone', 'recycle_types',
+        #           'admins', 'mark']
+        fields = ['id', 'name', 'logo', 'about', 'contact_url', 'mark', 'lat', 'lon', 'recycles']
 
 
 class EventSerializer(serializers.ModelSerializer):
     banner = serializers.ImageField()
+    title = serializers.CharField()
     about = serializers.CharField()
     begin_date = serializers.DateField()
-    begin_time = serializers.TimeField()
+    # begin_time = serializers.TimeField()
     end_date = serializers.DateField()
-    end_time = serializers.TimeField()
+    # end_time = serializers.TimeField()
     location = serializers.CharField()
-    lat = serializers.DecimalField(max_digits=9, decimal_places=6)
-    lon = serializers.DecimalField(max_digits=9, decimal_places=6)
-    organizer = ProjectSerializer()
+    is_top = serializers.BooleanField()
+
+    # lat = serializers.DecimalField(max_digits=9, decimal_places=6)
+    # lon = serializers.DecimalField(max_digits=9, decimal_places=6)
+    # organizer = ProjectSerializer(read_only=True)
 
     class Meta:
         model = Event
         # fields = ['id', 'banner', 'about', 'begin_date', 'end_date', 'location', 'lat', 'lon', 'organizer']
-        fields = '__all__'
+        # fields = '__all__'
+        fields = ['id', 'banner', 'title', 'about', 'begin_date', 'end_date', 'location', 'is_top']
+
 
 class WallPostSerializer(serializers.ModelSerializer):
     title = serializers.CharField()
@@ -96,8 +108,8 @@ class AdvertSerializer(serializers.ModelSerializer):
     description = serializers.CharField()
     body = serializers.CharField()
     photo = serializers.ImageField()
-    contacts = serializers.CharField()
-    location = serializers.CharField()
+    # contacts = serializers.CharField()
+    # location = serializers.CharField()
 
     class Meta:
         model = Advert
