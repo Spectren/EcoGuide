@@ -20,13 +20,15 @@ class Project(models.Model):
     logo = models.ImageField('Логотип', upload_to='project_logos', max_length=254, null=True, blank=True)
     about = models.TextField('Описание')
     contact_url = models.URLField('Ссылка на сайт', null=True, blank=True)
-    contact_email = models.EmailField('Контактный email', null=True, blank=True)
-    contact_phone = models.CharField('Телефон для связи', max_length=11, null=True, blank=True)
+    # contact_email = models.EmailField('Контактный email', null=True, blank=True)
+    # contact_phone = models.CharField('Телефон для связи', max_length=11, null=True, blank=True)
     recycle_types = models.ManyToManyField(RecycleType, blank=True, verbose_name='Типы вторсырья, которые принимает организация')
-    admins = models.ManyToManyField(User, verbose_name='Список администраторов')
+    # admins = models.ManyToManyField(User, verbose_name='Список администраторов')
+    lat = models.DecimalField('Координаты широты', max_digits=9, decimal_places=6, null=True, blank=True)
+    lon = models.DecimalField('Координаты долготы', max_digits=9, decimal_places=6, null=True, blank=True)
 
     def __str__(self):
-        return "%s %s" % (self.name, self.admins.all())
+        return "%s %s" % (self.id, self.name)
 
 
 class Event(models.Model):
@@ -35,17 +37,18 @@ class Event(models.Model):
     title = models.CharField("Название", max_length=150)
     about = models.TextField('О мероприятии')
     begin_date = models.DateField('Дата и время начала')
-    begin_time = models.TimeField('Время начала', null=True, blank=True)
+    # begin_time = models.TimeField('Время начала', null=True, blank=True)
     end_date = models.DateField('Дата и время предполагаемого окончания')
-    end_time = models.TimeField('Время предполагаемого окончания', null=True, blank=True)
+    # end_time = models.TimeField('Время предполагаемого окончания', null=True, blank=True)
     location = models.CharField('Адрес места проведения', max_length=1500, null=True, blank=True)
-    lat = models.DecimalField('Координаты широты', max_digits=9, decimal_places=6, null=True, blank=True)
-    lon = models.DecimalField('Координаты долготы', max_digits=9, decimal_places=6, null=True, blank=True)
-    organizer = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Организатор (Организация/проект)')
+    # lat = models.DecimalField('Координаты широты', max_digits=9, decimal_places=6, null=True, blank=True)
+    # lon = models.DecimalField('Координаты долготы', max_digits=9, decimal_places=6, null=True, blank=True)
+    # organizer = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Организатор (Организация/проект)',
+    #                               null=True, blank=True)
     is_top = models.BooleanField('Выводить в топ?', default=False)
 
     def __str__(self):
-        return "%s %s [%s]" % (self.id, self.title, self.organizer.name)
+        return "%s - %s [%s]" % (self.id, self.title, self.begin_date)
 
 
 class WallPost(models.Model):
@@ -90,9 +93,9 @@ class Advert(models.Model):
     title = models.CharField("Заголовок", max_length=150)
     description = models.CharField("Краткое описание", max_length=300, null=True, blank=True)
     body = models.TextField("Текст объявления")
-    photo = models.ImageField('Банер объявления', upload_to='add_photos', max_length=254 * 2)
-    contacts = models.TextField("Контакты автора")
-    location = models.CharField("Адрес самовывоза", max_length=1500, null=True, blank=True)
+    photo = models.ImageField('Превью', upload_to='add_photos', max_length=254 * 2)
+    # contacts = models.TextField("Контакты автора")
+    # location = models.CharField("Адрес самовывоза", max_length=1500, null=True, blank=True)
 
 
 class PickPoint(models.Model):

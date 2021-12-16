@@ -4,6 +4,8 @@ from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from rest_framework import permissions
 from rest_framework import mixins, viewsets
+from rest_framework.response import Response
+
 from src.serializers import UserSerializer, GroupSerializer, RecycleTypeSerializer, ProjectSerializer, EventSerializer, \
     WallPostSerializer, PickPointSerializer, AdvertSerializer
 from src.models import RecycleType, Project, Event, WallPost, PickPoint, Advert
@@ -17,6 +19,10 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_paginated_response(self, data):
+        """ Избавляемся от пагинации в ответе """
+        return Response(data)
+
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
@@ -26,12 +32,20 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_paginated_response(self, data):
+        """ Избавляемся от пагинации в ответе """
+        return Response(data)
+
 
 class RecycleTypeView(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = RecycleTypeSerializer
 
     def get_queryset(self):
         return RecycleType.objects.all()
+
+    def get_paginated_response(self, data):
+        """ Избавляемся от пагинации в ответе """
+        return Response(data)
 
 
 class ProjectView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
@@ -41,6 +55,10 @@ class ProjectView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateM
     def get_queryset(self):
         return Project.objects.all()
 
+    def get_paginated_response(self, data):
+        """ Избавляемся от пагинации в ответе """
+        return Response(data)
+
 
 class EventView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
                 viewsets.GenericViewSet):
@@ -48,6 +66,10 @@ class EventView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateMod
 
     def get_queryset(self):
         return Event.objects.all().order_by('-is_top', '-begin_date', 'begin_time')
+
+    def get_paginated_response(self, data):
+        """ Избавляемся от пагинации в ответе """
+        return Response(data)
 
 
 class WallPostView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
@@ -57,6 +79,10 @@ class WallPostView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.Update
     def get_queryset(self):
         return WallPost.objects.all()
 
+    def get_paginated_response(self, data):
+        """ Избавляемся от пагинации в ответе """
+        return Response(data)
+
 
 class AdvertView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
                  viewsets.GenericViewSet):
@@ -65,6 +91,10 @@ class AdvertView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateMo
     def get_queryset(self):
         return Advert.objects.all()
 
+    def get_paginated_response(self, data):
+        """ Избавляемся от пагинации в ответе """
+        return Response(data)
+
 
 class PickPointView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
                     viewsets.GenericViewSet):
@@ -72,3 +102,7 @@ class PickPointView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.Updat
 
     def get_queryset(self):
         return PickPoint.objects.all()
+
+    def get_paginated_response(self, data):
+        """ Избавляемся от пагинации в ответе """
+        return Response(data)
