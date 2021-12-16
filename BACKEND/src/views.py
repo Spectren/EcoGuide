@@ -65,7 +65,19 @@ class EventView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateMod
     serializer_class = EventSerializer
 
     def get_queryset(self):
-        return Event.objects.all().order_by('-is_top', '-begin_date', 'begin_time')
+        return Event.objects.all().order_by('-is_top', '-begin_date')
+
+    def get_paginated_response(self, data):
+        """ Избавляемся от пагинации в ответе """
+        return Response(data)
+
+
+class EventTopView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
+                   viewsets.GenericViewSet):
+    serializer_class = EventSerializer
+
+    def get_queryset(self):
+        return Event.objects.filter(is_top=True).order_by('-begin_date')
 
     def get_paginated_response(self, data):
         """ Избавляемся от пагинации в ответе """
