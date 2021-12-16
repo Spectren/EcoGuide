@@ -124,7 +124,7 @@ class _MasterPage extends State<MasterPage> {
               icon: ImageIcon(
                 AssetImage("assets/icons/eco-recycle.png"),
               ),
-              label: 'Объявления'),
+              label: 'Мероприятия'),
         ],
         backgroundColor: Colors.green,
         currentIndex: _selectedIndex,
