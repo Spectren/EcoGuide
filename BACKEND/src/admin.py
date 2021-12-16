@@ -5,10 +5,10 @@ from .models import *
 admin.site.register([
     RecycleType,
     Project,
-    # ProjectMark,
+    ProjectMark,
     # WallPost,
     Advert,
     # PickPoint,
     Event,
-    EventMark
+    # EventMark
 ])
