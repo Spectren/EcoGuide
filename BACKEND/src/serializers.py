@@ -53,6 +53,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     banner = serializers.ImageField()
     title = serializers.CharField()
+    sub_body = serializers.CharField()
     about = serializers.CharField()
     begin_date = serializers.DateField()
     # begin_time = serializers.TimeField()
@@ -69,7 +70,7 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         # fields = ['id', 'banner', 'about', 'begin_date', 'end_date', 'location', 'lat', 'lon', 'organizer']
         # fields = '__all__'
-        fields = ['id', 'banner', 'title', 'about', 'begin_date', 'end_date', 'location', 'is_top']
+        fields = ['id', 'banner', 'title', 'about', 'sub_body', 'begin_date', 'end_date', 'location', 'is_top']
 
 
 class WallPostSerializer(serializers.ModelSerializer):

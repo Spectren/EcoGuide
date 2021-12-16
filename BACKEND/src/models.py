@@ -35,6 +35,7 @@ class Event(models.Model):
     """ Мероприятия """
     banner = models.ImageField(upload_to='evnet_banners', max_length=1024)
     title = models.CharField("Название", max_length=150)
+    sub_body = models.CharField("Краткое описание", max_length=500)
     about = models.TextField('О мероприятии')
     begin_date = models.DateField('Дата и время начала')
     # begin_time = models.TimeField('Время начала', null=True, blank=True)
