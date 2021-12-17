@@ -17,6 +17,8 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class RecycleTypeSerializer(serializers.ModelSerializer):
+    name = serializers.CharField()
+
     class Meta:
         model = RecycleType
         fields = '__all__'
@@ -122,9 +124,12 @@ class PickPointSerializer(serializers.ModelSerializer):
     place = serializers.CharField()
     lat = serializers.DecimalField(max_digits=9, decimal_places=6)
     lon = serializers.DecimalField(max_digits=9, decimal_places=6)
-    type = RecycleTypeSerializer()
+    recycles = serializers.SerializerMethodField('get_recycle_types')
     about = serializers.CharField()
 
     class Meta:
         model = PickPoint
-        fields = '__all__'
+        fields = ('name','place','lat','lon','recycles','about')
+
+    def get_recycle_types(self, pickPoint):
+        return pickPoint.type.all().values_list('name', flat=True)

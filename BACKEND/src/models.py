@@ -6,9 +6,9 @@ from django.db import models
 
 class RecycleType(models.Model):
     name = models.CharField('Наименование материала, например: Бумага', max_length=500, unique=True)
-    logo = models.ImageField('Картинка материала', upload_to='recycle_images', max_length=254)
-    color_hex = models.CharField('Цвет-индикатор этого материала, HEX (то есть выглядит как #2596be)\n'
-                                 'Указывается БЕЗ `#`!', max_length=6)
+    # logo = models.ImageField('Картинка материала', upload_to='recycle_images', max_length=254)
+    # color_hex = models.CharField('Цвет-индикатор этого материала, HEX (то есть выглядит как #2596be)\n'
+    #                              'Указывается БЕЗ `#`!', max_length=6)
 
     def __str__(self):
         return self.name
@@ -106,4 +106,4 @@ class PickPoint(models.Model):
     lat = models.DecimalField('Координаты широты', max_digits=9, decimal_places=6, null=True, blank=True)
     lon = models.DecimalField('Координаты широты', max_digits=9, decimal_places=6, null=True, blank=True)
     type = models.ManyToManyField(RecycleType, verbose_name='Типы материалов, которые принимает точка')
-    about = models.TextField("Название организации")
+    about = models.TextField("Описание", null=True, blank=True)

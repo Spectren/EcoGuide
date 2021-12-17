@@ -8,7 +8,7 @@ admin.site.register([
     ProjectMark,
     # WallPost,
     Advert,
-    # PickPoint,
+    PickPoint,
     Event,
     # EventMark
 ])
